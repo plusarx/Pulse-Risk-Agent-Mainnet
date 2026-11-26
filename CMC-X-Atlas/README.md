@@ -190,4 +190,4 @@ npm test                              # app, includes the integrity tests
 cd agent && npm test                  # agent
 ```
 
-More: [demo script](docs/DEMO.md)
+More: [integration write-up](INTEGRATION-WRITEUP.md) · [demo script](docs/DEMO.md)
