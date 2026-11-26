@@ -96,7 +96,7 @@ export async function findDeriveSubaccount(n: VenueNetwork, wallet: Address): Pr
 const SESSION_KEY_DAYS = 30;
 
 /**
- * Step 1: generate the session key server-side and build what the OWNER (MetaMask) must sign:
+ * Step 1: generate the session key server-side and build what the OWNER (your wallet) must sign:
  * the set_session_key action, the whitelist-self action (so `withdraw` can pay out to the owner),
  * and the login timestamp for the X-Derive* headers.
  */

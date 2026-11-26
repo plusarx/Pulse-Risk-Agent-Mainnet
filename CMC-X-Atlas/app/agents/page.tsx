@@ -24,20 +24,20 @@ const VENUES = {
   aster: {
     name: 'Perps', kind: 'Perps', color: 'text-[#a593ff]',
     can: ['Place and cancel perp orders', 'Read your perps balance, positions and orders', 'Move your own perps balance from spot to futures margin'],
-    cannot: ['Withdraw: every withdrawal needs your MetaMask signature and pays only your own wallet', 'Trade spot or register other keys'],
-    sign: '1 MetaMask signature on BNB Chain (typed data, no gas)',
+    cannot: ['Withdraw: every withdrawal needs your wallet signature and pays only your own wallet', 'Trade spot or register other keys'],
+    sign: '1 wallet signature (typed data, no gas)',
   },
   lighter: {
     name: 'Perps', kind: 'Perps', color: 'text-[#a593ff]',
     can: ['Place, modify and cancel perp orders', 'Move USDC between your own perps accounts', 'Secure-withdraw to your own Ethereum address'],
-    cannot: ['Send funds to anyone else (needs your MetaMask signature)', 'Register other keys'],
-    sign: '1 MetaMask signature (personal_sign, no gas)',
+    cannot: ['Send funds to anyone else (needs your wallet signature)', 'Register other keys'],
+    sign: '1 wallet signature (personal_sign, no gas)',
   },
   derive: {
     name: 'Options', kind: 'Options', color: 'text-[#5fd0ff]',
     can: ['Trade options and perps (trade:all)', 'Transfer between your own subaccounts', 'Withdraw to your own wallet (whitelisted at setup)'],
     cannot: ['admin, set_session_key, transfer:all or transfers to other owners (never requested)'],
-    sign: '3 MetaMask signatures on Ethereum/Sepolia (2 typed-data + 1 login), no gas',
+    sign: '3 wallet signatures on Ethereum/Sepolia (2 typed-data + 1 login), no gas',
   },
 } as const;
 
@@ -53,12 +53,12 @@ export default function AgentsPage() {
         <h1 className="flex items-center gap-2 text-2xl font-semibold"><KeyRound className="text-accent" />Agent keys</h1>
         <p className="mt-2 max-w-3xl text-sm text-muted leading-relaxed">
           Perps and options each let your wallet approve a separate <b className="text-white">agent key</b> that signs orders for you.
-          MetaMask only signs once to approve it. The key is created and kept encrypted on the Pulse Risk backend, so the hedging and
+          Your wallet only signs once to approve it. The key is created and kept encrypted on the Pulse Risk backend, so the hedging and
           rebalancing agent can act while you&apos;re away. Its permissions are limited: it can never send funds to anyone but you.
         </p>
         <div className="mt-3 text-xs text-muted">Network: <span className="text-white capitalize">{network}</span> (switch in the sidebar). Keys are per network.</div>
       </div>
-      {!isConnected ? <div className="panel p-6 text-muted">Connect MetaMask first.</div>
+      {!isConnected ? <div className="panel p-6 text-muted">Connect your wallet first.</div>
         : !wallet ? <div className="panel p-6"><p className="mb-3 text-sm text-muted">Sign in (a message, no gas) so the backend knows this wallet is yours.</p><button className="btn-primary" disabled={signingIn} onClick={() => void signIn()}>{signingIn ? 'Signing…' : 'Sign in'}</button></div>
         : <div className="grid gap-4 md:grid-cols-2">
           {(['aster', 'derive'] as const).map((v) => <VenueCard key={v} venue={v} row={keys.data?.find((k) => k.venue === v && k.network === network)} />)}
@@ -86,16 +86,16 @@ function VenueCard({ venue, row }: { venue: 'aster' | 'lighter' | 'derive'; row?
         setStep('Generating the agent key…');
         const prep = await getJson<{ typedData: AsterTypedData; msg: string; agent: string; expiresAt: number }>('/api/agent/register/aster', { method: 'POST', body: JSON.stringify({ network, step: 'prepare' }) });
         const want = prep.typedData.domain.chainId;
-        // The approval is chain-bound typed data: MetaMask must be on BNB Chain (testnet: BNB testnet) to sign it.
-        if (chainId !== want) { setStep(`Switch MetaMask to ${want === bsc.id ? 'BNB Chain' : 'BNB testnet'}…`); await switchChainAsync({ chainId: want as 56 | 97 }); }
-        setStep(`Approve agent ${shortAddr(prep.agent)} in MetaMask (trade only, never withdraw)…`);
+        // The approval is chain-bound typed data: your wallet must be on BNB Chain (testnet: BNB testnet) to sign it.
+        if (chainId !== want) { setStep(`Switch your wallet to ${want === bsc.id ? 'BNB Chain' : 'BNB testnet'}…`); await switchChainAsync({ chainId: want as 56 | 97 }); }
+        setStep(`Approve agent ${shortAddr(prep.agent)} in your wallet (trade only, never withdraw)…`);
         const signature = await signTypedDataAsync({ domain: prep.typedData.domain, types: prep.typedData.types, primaryType: 'Message', message: prep.typedData.message });
         setStep('Registering with perps…');
         await getJson('/api/agent/register/aster', { method: 'POST', body: JSON.stringify({ network, step: 'finalize', signature }) });
       } else if (venue === 'lighter') {
         setStep('Generating key and signing ChangePubKey…');
         const prep = await getJson<{ messageToSign: string; accountIndex: number }>('/api/agent/register/lighter', { method: 'POST', body: JSON.stringify({ network, step: 'prepare' }) });
-        setStep(`Approve in MetaMask (perps account #${prep.accountIndex})…`);
+        setStep(`Approve in your wallet (perps account #${prep.accountIndex})…`);
         const signature = await signMessageAsync({ message: prep.messageToSign });
         setStep('Submitting to perps and waiting for the key to go live…');
         await getJson('/api/agent/register/lighter', { method: 'POST', body: JSON.stringify({ network, step: 'finalize', signature }) });
@@ -103,7 +103,7 @@ function VenueCard({ venue, row }: { venue: 'aster' | 'lighter' | 'derive'; row?
         setStep('Preparing session key…');
         const prep = await getJson<{ chainId: number; loginMessage: string; setKeyTypedData: TypedData; whitelistTypedData: TypedData; subaccountId: number }>('/api/agent/register/derive', { method: 'POST', body: JSON.stringify({ network, step: 'prepare' }) });
         const original = chainId;
-        if (chainId !== prep.chainId) { setStep('Switch MetaMask to ' + (prep.chainId === 1 ? 'Ethereum' : 'Sepolia') + ' (typed data is chain-bound)…'); await switchChainAsync({ chainId: prep.chainId as 1 | 11155111 }); }
+        if (chainId !== prep.chainId) { setStep('Switch your wallet to ' + (prep.chainId === 1 ? 'Ethereum' : 'Sepolia') + ' (typed data is chain-bound)…'); await switchChainAsync({ chainId: prep.chainId as 1 | 11155111 }); }
         setStep('1/3 Approve the session key…');
         const setKey = await signTypedDataAsync(toSignable(prep.setKeyTypedData));
         setStep('2/3 Whitelist your own wallet for withdrawals…');

@@ -11,7 +11,7 @@ import { fmtUsd } from '@/lib/format';
 const newIdem = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
 
 /**
- * Lighter sub-accounts: create one, enable the agent key on it (one MetaMask signature — the SAME agent
+ * Lighter sub-accounts: create one, enable the agent key on it (one wallet signature — the SAME agent
  * key is registered on the sub), move USDC between your own accounts (instant), and pick one to trade from.
  */
 export function LighterSubaccounts({ accounts, onTradeFrom }: { accounts: LighterAccountView[]; onTradeFrom: (index: number) => void }) {
@@ -65,7 +65,7 @@ export function LighterSubaccounts({ accounts, onTradeFrom }: { accounts: Lighte
 
       <div className="flex flex-wrap items-start gap-3">
         <button disabled={!!busy || !masterActive} className="btn-ghost inline-flex items-center gap-1.5 px-3 py-2 text-sm"
-          title={masterActive ? 'Signed by the agent key on your main account — no MetaMask popup' : 'Register the perps agent first'}
+          title={masterActive ? 'Signed by the agent key on your main account — no wallet popup' : 'Register the perps agent first'}
           onClick={() => void run('create', async () => {
             const r = await post<{ index: number | null; txHash: string }>({ action: 'create' }, true);
             return r.index ? `Created Sub #${r.index}. Enable the agent on it, then move USDC in.` : 'Sub-account submitted; it appears in a few seconds.';

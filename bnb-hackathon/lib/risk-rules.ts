@@ -62,7 +62,7 @@ export const MIN_DEPOSIT_BASE_UNIT: Record<RuleVenue, string> = { aster: '600000
 /** Venue credit time; the effective cooldown is never shorter (a second top-up before the first lands double-funds). */
 export const MIN_COOLDOWN_SEC: Record<RuleVenue, number> = { aster: 300, derive: 300 };
 export const RELEASE_ARRIVAL: Record<RuleVenue, string> = {
-  aster: 'Aster withdraws straight to your BNB Chain wallet (you sign it in MetaMask)',
+  aster: 'Aster withdraws straight to your BNB Chain wallet (you sign it in your wallet)',
   derive: 'Derive withdraws to your Ethereum address (~14 min), then Relay bridges it to BNB',
 };
 

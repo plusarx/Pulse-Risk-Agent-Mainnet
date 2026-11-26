@@ -82,7 +82,7 @@ export function SwapTicket({ token, refPrice, balances, onFilled }: {
       const tokenIn: Address = side === 'buy' ? PAY_TOKENS[pay] : token.address;
       const allowance = await client.readContract({ address: tokenIn, abi: ERC20_ABI, functionName: 'allowance', args: [address, PANCAKE_SMART_ROUTER] });
       if (allowance < amountIn) {
-        setStatus({ kind: 'info', msg: 'Approve the exact amount in MetaMask…' });
+        setStatus({ kind: 'info', msg: 'Approve the exact amount in your wallet…' });
         const h = await writeContractAsync({ address: tokenIn, abi: ERC20_ABI, functionName: 'approve', args: [PANCAKE_SMART_ROUTER, amountIn], chainId: bsc.id });
         await client.waitForTransactionReceipt({ hash: h });
       }
@@ -93,7 +93,7 @@ export function SwapTicket({ token, refPrice, balances, onFilled }: {
       const amountOutMinimum = minOut(BigInt(fresh.best.amountOut), slipBps);
       const swap = encodeFunctionData({ abi: SMART_ROUTER_ABI, functionName: 'exactInput', args: [{ path, recipient: address, amountIn, amountOutMinimum }] });
       const deadline = BigInt(Math.floor(Date.now() / 1000) + 300);
-      setStatus({ kind: 'info', msg: 'Confirm the swap in MetaMask…' });
+      setStatus({ kind: 'info', msg: 'Confirm the swap in your wallet…' });
       const hash = await writeContractAsync({ address: PANCAKE_SMART_ROUTER, abi: SMART_ROUTER_ABI, functionName: 'multicall', args: [deadline, [swap]], chainId: bsc.id });
       setStatus({ kind: 'info', msg: 'Swap submitted, waiting for confirmation…', hash });
       const rcpt = await client.waitForTransactionReceipt({ hash });
@@ -110,7 +110,7 @@ export function SwapTicket({ token, refPrice, balances, onFilled }: {
   }
 
   const disabled = !isConnected || !amountIn || !quote?.best || insufficient || busy || quoting || lowLiquidity;
-  const label = !isConnected ? 'Connect MetaMask to trade' : lowLiquidity ? 'Liquidity too thin to trade' : insufficient ? 'Insufficient balance' : busy ? 'Working…' : `${side === 'buy' ? 'Buy' : 'Sell'} ${token.symbol}`;
+  const label = !isConnected ? 'Connect a wallet to trade' : lowLiquidity ? 'Liquidity too thin to trade' : insufficient ? 'Insufficient balance' : busy ? 'Working…' : `${side === 'buy' ? 'Buy' : 'Sell'} ${token.symbol}`;
 
   return (
     <div className="panel flex flex-col gap-4 p-4">
@@ -157,7 +157,7 @@ export function SwapTicket({ token, refPrice, balances, onFilled }: {
           {status.msg} {status.hash && <a className="underline" target="_blank" rel="noreferrer" href={`https://bscscan.com/tx/${status.hash}`}>BscScan ↗</a>}
         </div>
       )}
-      <p className="text-[11px] leading-snug text-muted">Swaps run from your MetaMask on BNB Chain (gas in BNB). Approvals are for the exact amount only. Every fee tier is quoted, and the best one is used.</p>
+      <p className="text-[11px] leading-snug text-muted">Swaps run from your wallet on BNB Chain (gas in BNB). Approvals are for the exact amount only. Every fee tier is quoted, and the best one is used.</p>
     </div>
   );
 }

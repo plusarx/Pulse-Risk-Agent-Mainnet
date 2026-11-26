@@ -146,7 +146,7 @@ function setMeta(wallet: string, n: VenueNetwork, meta: KeyMeta) {
 
 /**
  * Step 1 of agent registration: generate the API key server-side (it never leaves the server),
- * sign the ChangePubKey L2 tx, and return the exact message MetaMask must personal_sign.
+ * sign the ChangePubKey L2 tx, and return the exact message your wallet must personal_sign.
  */
 export async function prepareLighterKey(n: VenueNetwork, wallet: Address): Promise<{ accountIndex: number; messageToSign: string; publicKey: string }> {
   const acct = await findLighterAccount(n, wallet);
@@ -297,7 +297,7 @@ export async function lighterWithdrawals(n: VenueNetwork, wallet: Address): Prom
   })).sort((a, b) => b.timestamp - a.timestamp);
 }
 
-/** Register the existing agent key on a sub-account: returns the message MetaMask must personal_sign. */
+/** Register the existing agent key on a sub-account: returns the message your wallet must personal_sign. */
 export async function prepareLighterSubKey(n: VenueNetwork, wallet: Address, subIndex: number): Promise<{ messageToSign: string }> {
   const row = keyRow(wallet, n);
   if (!row || row.status !== 'active') throw new Error('Register the Lighter agent on your main account first');
@@ -339,7 +339,7 @@ async function authTokenFor(s: Signer, acct: number, keyIdx: number) {
   return { token: t.authToken };
 }
 
-// ── Orders (signed by the agent key; no MetaMask popup) ──────────────────────
+// ── Orders (signed by the agent key; no wallet popup) ──────────────────────
 export interface LighterMarket { market_id: number; symbol: string; size_decimals: number; price_decimals: number; min_base_amount: string; last_trade_price: number; status?: string }
 
 export async function lighterMarket(n: VenueNetwork, marketId: number): Promise<LighterMarket> {

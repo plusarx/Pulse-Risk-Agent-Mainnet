@@ -57,7 +57,7 @@ export default function FundingPage() {
   );
 }
 
-/** Every place USDC can sit, all owned by the same MetaMask address. The app never holds funds. */
+/** Every place USDC can sit, all owned by the same wallet address. The app never holds funds. */
 function WhereMoneyIs() {
   const { network } = useVenueNetwork();
   const bsc = useBscBalances();
@@ -78,12 +78,12 @@ function WhereMoneyIs() {
     <div className="panel p-4">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
         <div className="font-medium">Where your money is</div>
-        <div className="text-xs text-muted">All owned by your MetaMask address. Pulse Risk never holds funds; it only moves them between your own accounts.</div>
+        <div className="text-xs text-muted">All owned by your wallet address. Pulse Risk never holds funds; it only moves them between your own accounts.</div>
       </div>
       <div className="flex flex-wrap gap-2 md:flex-nowrap">
-        {box('BNB Chain wallet', 'MetaMask · mainnet', `${fmtUnits(bsc.usdc, 18, 2)} USDC · ${fmtUnits(bsc.usdt, 18, 2)} USDT`, 'bStocks collateral, perps deposits, rebalance source')}
+        {box('BNB Chain wallet', 'Wallet · mainnet', `${fmtUnits(bsc.usdc, 18, 2)} USDC · ${fmtUnits(bsc.usdt, 18, 2)} USDT`, 'bStocks collateral, perps deposits, rebalance source')}
         {arrow}
-        {box(`${l1Name} wallet`, 'MetaMask · L1', `${fmtUnits(dl1.bal ?? null, dl1.dec, 2)} USDC`,
+        {box(`${l1Name} wallet`, 'Wallet · L1', `${fmtUnits(dl1.bal ?? null, dl1.dec, 2)} USDC`,
           network === 'testnet' ? 'options mock USDC' : 'transit: Relay lands here for options')}
         {arrow}
         <div className="flex flex-1 flex-col gap-2 sm:flex-row">
@@ -180,7 +180,7 @@ function RelayFlow({ route }: { route: BridgeRoute }) {
       </div>
       {err && <div className="mt-3 rounded-xl bg-down/10 px-3 py-2 text-xs text-down">{err}</div>}
       <Logs logs={tx.logs} />
-      <p className="mt-4 text-[11px] text-muted">Each Relay step is checked server-side (router, token, amount, depositor) before MetaMask sees it. The approval is for the exact amount.</p>
+      <p className="mt-4 text-[11px] text-muted">Each Relay step is checked server-side (router, token, amount, depositor) before your wallet sees it. The approval is for the exact amount.</p>
     </div>
   );
 }

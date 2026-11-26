@@ -2,7 +2,7 @@
 
 **Trade perpetuals and options from one screen, and let an agent watch your margin and hedge for you, inside limits you set.**
 
-Perps run on **Aster** (Aster chain, USDT margin). Options run on **Derive** (Ethereum). An agent checks your accounts every 30
+Perps run on **Aster** (Aster chain, USDT margin). Options run on **Derive** (funded through Ethereum). An agent checks your accounts every 30
 seconds, tops up margin from your BNB wallet before an account runs short, and places hedges. It cannot move money out,
 and in the default mode it does nothing until you press Approve.
 
@@ -26,7 +26,7 @@ and in the default mode it does nothing until you press Approve.
 |---|---|
 | **bStocks** (tokenized stocks) | BNB Chain |
 | **Perps** (Aster) | Aster chain |
-| **Options** (Derive) | Ethereum |
+| **Options** (Derive) | Funded through Ethereum |
 
 ---
 

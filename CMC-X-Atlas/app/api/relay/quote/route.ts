@@ -28,7 +28,7 @@ const ROUTES: Record<BridgeRoute, { origin: number; dest: number; inToken: Addre
   eth_to_bsc: { origin: 1, dest: 56, inToken: ETH_USDC, outCurrency: BSC_USDC, inDecimals: 6 },
 };
 
-/** POST { route, amount (base units of the input token) } → validated tx steps for MetaMask. Mainnet only. */
+/** POST { route, amount (base units of the input token) } → validated tx steps for your wallet. Mainnet only. */
 export async function POST(req: Request) {
   return withWallet(async (wallet) => {
     const b = (await req.json().catch(() => ({}))) as { route?: BridgeRoute; amount?: string };

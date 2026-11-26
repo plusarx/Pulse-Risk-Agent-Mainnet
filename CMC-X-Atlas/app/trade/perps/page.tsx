@@ -234,7 +234,7 @@ function PerpTicket({ m, view, loading }: { m: AsterMarket; view: AsterAccountVi
         </button>
       </AgentGate>
       {msg && <div className={clsx('rounded-xl px-3 py-2 text-xs', msg.ok ? 'bg-up/10 text-up' : 'bg-down/10 text-down')}>{msg.text}</div>}
-      <p className="text-[11px] text-muted leading-snug">Perps orders are signed by your registered agent key on the server and matched off-chain: no gas, no MetaMask popup. Margin is USDT.</p>
+      <p className="text-[11px] text-muted leading-snug">Perps orders are signed by your registered agent key on the server and matched off-chain: no gas, no wallet popup. Margin is USDT.</p>
     </div>
   );
 }

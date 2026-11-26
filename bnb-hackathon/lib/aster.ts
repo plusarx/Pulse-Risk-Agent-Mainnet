@@ -1,7 +1,7 @@
 // Aster perps: the shared, pure core used by the app server and the agent. No secrets live here; a signer is passed in.
 //
 // Two signing flows, both EIP-712 on the domain "AsterSignTransaction" v1 with verifyingContract 0x0:
-//  * Agent approval: signed ONCE by the user's own wallet (MetaMask), chainId = signatureChainId (56), primaryType
+//  * Agent approval: signed ONCE by the user's own wallet (your wallet), chainId = signatureChainId (56), primaryType
 //    Message{ msg: "user=..&nonce=..&agentName=..&agentAddress=..&expired=..&signatureChainId=56&canSpotTrade=..
 //    &canPerpTrade=..&canWithdraw=false" }, POSTed as a form body to /fapi/v3/registerAndApproveAgent. The agent can
 //    trade and read; it can never withdraw.

@@ -15,7 +15,7 @@ import type { AgentConfig } from '@/lib/agent-config';
 import { baseUnitsToText, usdToBaseUnits } from '@/lib/risk-rules';
 
 // One question, one button: "how much may the agent use for top-ups?" It always takes USDC first, then USDT, and
-// (only if the box is ticked) sells your bStocks last. Allow = MetaMask approvals for exactly that; Stop = set them to 0.
+// (only if the box is ticked) sells your bStocks last. Allow = wallet approvals for exactly that; Stop = set them to 0.
 
 type Funding = Pick<AgentConfig['rebalance'], 'sources' | 'sellOrder' | 'keepBscReserveBaseUnit'> & { haircut: number };
 
@@ -60,7 +60,7 @@ export function FundingPanel({ value, prices, haircutFor, onSave }: { value: Fun
   const anyAllowed = tokens.some((t) => allowed(t.id) > 0n);
 
   const units = safeParseUnits(amount, 18);
-  // Each approval costs a little BNB gas (≈0.0000025 BNB at 0.05 gwei). With none, MetaMask fails before anything is sent.
+  // Each approval costs a little BNB gas (≈0.0000025 BNB at 0.05 gwei). With none, your wallet fails before anything is sent.
   const noGas = bal.bnb !== null && bal.bnb < 10n ** 13n; // < 0.00001 BNB
   const usdcBal = usdcBalN;
 
@@ -77,7 +77,7 @@ export function FundingPanel({ value, prices, haircutFor, onSave }: { value: Fun
       ok = true;
     });
     // tx.run swallows the error (and logs it): only save and say "done" if every approval went through.
-    if (!ok) { setNote({ ok: false, text: 'Not allowed: the MetaMask approval did not go through. Nothing was changed.' }); return; }
+    if (!ok) { setNote({ ok: false, text: 'Not allowed: the wallet approval did not go through. Nothing was changed.' }); return; }
     const e = await onSave({ ...value, sources: ['bsc_usdc', 'bsc_usdt', ...(sellStocks ? ['sell_bstocks' as const] : [])], sellOrder: sellStocks ? held.map((h) => h.symbol) : value.sellOrder });
     setNote(e ? { ok: false, text: e } : { ok: true, text: 'Done. The agent can now use this for top-ups.' });
     setAmount('');
@@ -94,7 +94,7 @@ export function FundingPanel({ value, prices, haircutFor, onSave }: { value: Fun
     });
     // Never claim "stopped" unless every revoke went through: the user would wrongly think the agent can't take funds.
     setNote(ok ? { ok: true, text: 'Stopped. The agent can no longer take anything from your BNB wallet.' }
-      : { ok: false, text: 'Not stopped: a MetaMask step did not go through. The agent may still use what is shown above. Try Stop again.' });
+      : { ok: false, text: 'Not stopped: a wallet step did not go through. The agent may still use what is shown above. Try Stop again.' });
   }
 
   if (!agent) return <section className="panel p-5 text-sm text-muted">The agent&apos;s BNB address isn&apos;t configured (<code>AGENT_BSC_ADDRESS</code>), so it can&apos;t be given anything to use yet.</section>;
@@ -107,7 +107,7 @@ export function FundingPanel({ value, prices, haircutFor, onSave }: { value: Fun
       <div className={clsx('mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3 text-sm', total >= MIN_TOPUP ? 'bg-up/10 text-up' : 'bg-accent/10 text-accent')}>
         <span className="flex items-center gap-2">
           {total >= MIN_TOPUP ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
-          {!address ? 'Connect MetaMask to set a budget.'
+          {!address ? 'Connect a wallet to set a budget.'
             : total >= MIN_TOPUP ? <>The agent can use up to <b className="num">{usd(total)}</b>{stocks > 0 ? <span className="text-[12px]"> (incl. {usd(stocks)} by selling bStocks)</span> : null}.</>
             : usdcFree + usdtFree < MIN_TOPUP && !stocks
               ? <>Not enough USDC on BNB: you keep {usd(reserve)} aside, leaving {usd(usdcFree + usdtFree)}. A top-up needs {usd(MIN_TOPUP)}. Lower the reserve under Advanced or add USDC.</>
@@ -133,9 +133,9 @@ export function FundingPanel({ value, prices, haircutFor, onSave }: { value: Fun
 
       {noGas && <p className="mt-3 rounded-lg bg-down/10 px-3 py-2 text-xs text-down">You have no BNB for gas. Send about 0.002 BNB (~$1) to your wallet on BNB Smart Chain, then click Allow. Each approval costs a fraction of a cent.</p>}
       <button type="button" className="btn-primary mt-4 w-full py-3 text-base sm:w-auto sm:px-8" disabled={!address || !units || tx.busy || noGas} onClick={() => void allow()}>
-        {tx.busy ? 'Confirm in MetaMask…' : units ? `Allow $${amount}` : 'Allow'}
+        {tx.busy ? 'Confirm in your wallet…' : units ? `Allow $${amount}` : 'Allow'}
       </button>
-      <p className="mt-2 text-[11px] text-muted">MetaMask asks you to approve {sellStocks && held.length ? `${1 + ((bal.usdt ?? 0n) > 0n ? 1 : 0) + held.length} small steps` : (bal.usdt ?? 0n) > 0n ? '2 small steps' : 'once'}. Only the agent ({shortAddr(agent)}) can use it, and only up to this amount.</p>
+      <p className="mt-2 text-[11px] text-muted">Your wallet asks you to approve {sellStocks && held.length ? `${1 + ((bal.usdt ?? 0n) > 0n ? 1 : 0) + held.length} small steps` : (bal.usdt ?? 0n) > 0n ? '2 small steps' : 'once'}. Only the agent ({shortAddr(agent)}) can use it, and only up to this amount.</p>
 
       {tx.logs.length > 0 && (tx.busy || tx.logs[tx.logs.length - 1].kind === 'err') && (
         <p className={clsx('mt-2 text-xs', tx.logs[tx.logs.length - 1].kind === 'err' ? 'text-down' : 'text-muted')}>{tx.logs[tx.logs.length - 1].text}</p>)}

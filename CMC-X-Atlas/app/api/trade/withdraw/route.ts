@@ -12,7 +12,7 @@ const AMT = /^\d+(\.\d{1,6})?$/;
 
 /**
  * GET ?network=&venue=aster|lighter|derive → the wallet's recent withdrawals on that venue (aster: none listed yet).
- * POST { network, venue: 'aster', step: 'prepare', amount } → typed data the USER signs in MetaMask (BNB Chain).
+ * POST { network, venue: 'aster', step: 'prepare', amount } → typed data the USER signs in your wallet (BNB Chain).
  * POST { network, venue: 'aster', step: 'submit', amount, fee, nonce, signature } + Idempotency-Key → the agent submits it;
  *   the receiver is always the signed-in wallet on BNB Chain.
  * POST { network, venue, amount, subaccountId? } + Idempotency-Key → withdraw USDC to the wallet on Ethereum.

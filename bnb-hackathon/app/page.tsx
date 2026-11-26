@@ -74,7 +74,7 @@ export default function PortfolioPage() {
       </div>
 
       <div id="positions" className="grid gap-4 lg:grid-cols-4">
-        <Card title="BNB Chain wallet" sub="MetaMask · BSC mainnet" href="/funding">
+        <Card title="BNB Chain wallet" sub="Wallet · BSC mainnet" href="/funding">
           <Row k="USDC" v={fmtNum(p.bsc.usdc)} cls="text-lg" />
           <Row k="USDT" v={fmtNum(p.bsc.usdt)} />
           <Row k="BNB (gas)" v={fmtNum(p.bsc.bnb, 5)} />

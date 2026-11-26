@@ -10,7 +10,7 @@ import { getJson, useAsterAccount, useDeriveAccount } from '@/lib/hooks/useVenue
 import type { withdrawActionTypedData } from '@/lib/aster-view';
 
 // Venue → the user's own wallet.
-//  * Perps (Aster): the USER signs the withdrawal in MetaMask (the agent can never withdraw); the agent only submits
+//  * Perps (Aster): the USER signs the withdrawal in your wallet (the agent can never withdraw); the agent only submits
 //    it. USDT lands in the same wallet on BNB Chain. UNVERIFIED-live (ported from manager-service).
 //  * Options (Derive): signed server-side by the agent key; Derive pays only the account owner, on Ethereum.
 
@@ -20,7 +20,7 @@ interface Withdrawal { venue: Venue; account: string; amount: string; fee: strin
 
 const MIN: Record<Venue, number> = { aster: 1, derive: 5 };
 const INFO: Record<Venue, string> = {
-  aster: 'You sign the withdrawal in MetaMask (no gas) · a fee of about $0.60 is taken from the amount · lands on BNB Chain',
+  aster: 'You sign the withdrawal in your wallet (no gas) · a fee of about $0.60 is taken from the amount · lands on BNB Chain',
   derive: 'Arrives in about 14 min · options charges a fee of about $1 (capped at $3) from the amount',
 };
 const AMT = /^\d+(\.\d{1,6})?$/;
@@ -66,7 +66,7 @@ export function WithdrawFlow({ onBridge }: { onBridge: () => void }) {
     try {
       if (venue === 'aster') {
         const prep = await getJson<AsterWithdrawPrep>('/api/trade/withdraw', { method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': idem }, body: JSON.stringify({ network, venue, step: 'prepare', amount }) });
-        // The withdrawal is typed data bound to the destination chain (BNB Chain): MetaMask must be on it.
+        // The withdrawal is typed data bound to the destination chain (BNB Chain): your wallet must be on it.
         if (chainId !== prep.chainId) await switchChainAsync({ chainId: prep.chainId as 56 });
         const td = prep.typedData;
         const signature = await signTypedDataAsync({ domain: td.domain, types: td.types, primaryType: 'Action', message: { ...td.message, nonce: BigInt(td.message.nonce) } });
@@ -89,8 +89,8 @@ export function WithdrawFlow({ onBridge }: { onBridge: () => void }) {
     <div className="mx-auto max-w-lg">
       <h2 className="mb-1 text-xl font-semibold">Withdraw from a venue</h2>
       <p className="mb-4 text-sm text-muted">{venue === 'aster'
-        ? 'Sends USDT back to your own wallet on BNB Chain. You approve it with one MetaMask signature; the agent key can never withdraw.'
-        : `Sends USDC back to your own wallet on ${network === 'testnet' ? 'Sepolia' : 'Ethereum'}. No MetaMask popup: your agent key signs, and it can only pay you.`}</p>
+        ? 'Sends USDT back to your own wallet on BNB Chain. You approve it with one wallet signature; the agent key can never withdraw.'
+        : `Sends USDC back to your own wallet on ${network === 'testnet' ? 'Sepolia' : 'Ethereum'}. No wallet popup: your agent key signs, and it can only pay you.`}</p>
 
       <div className="mb-3 grid grid-cols-2 gap-1 rounded-xl bg-bg p-1 text-sm">
         {(['aster', 'derive'] as const).map((v) => (
@@ -122,7 +122,7 @@ export function WithdrawFlow({ onBridge }: { onBridge: () => void }) {
       {problem && <p className="mt-3 text-xs text-accent">{problem}</p>}
 
       <button className="btn-primary mt-4 w-full" disabled={!ready || n === null || !!problem || busy || (venue === 'derive' && !sub)} onClick={() => void submit()}>
-        {busy ? (venue === 'aster' ? 'Sign in MetaMask…' : 'Sending…') : venue === 'aster' ? 'Withdraw to my BNB wallet' : 'Withdraw to my Ethereum wallet'}
+        {busy ? (venue === 'aster' ? 'Sign in your wallet…' : 'Sending…') : venue === 'aster' ? 'Withdraw to my BNB wallet' : 'Withdraw to my Ethereum wallet'}
       </button>
       {msg && <div className={clsx('mt-3 rounded-xl px-3 py-2 text-xs', msg.kind === 'ok' ? 'bg-up/10 text-up' : 'bg-down/10 text-down')}>{msg.text}</div>}
 

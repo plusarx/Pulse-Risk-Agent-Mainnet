@@ -19,7 +19,7 @@ export function getDb(): DatabaseSync {
       address TEXT PRIMARY KEY, nonce TEXT NOT NULL, issued_at INTEGER NOT NULL
     );
     CREATE TABLE IF NOT EXISTS agent_keys (
-      wallet TEXT NOT NULL,             -- lowercased MetaMask (owner) address
+      wallet TEXT NOT NULL,             -- lowercased your wallet (owner) address
       venue TEXT NOT NULL,              -- 'lighter' | 'derive'
       network TEXT NOT NULL,            -- 'mainnet' | 'testnet'
       account_ref TEXT NOT NULL,        -- lighter account index | derive subaccount id

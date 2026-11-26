@@ -17,9 +17,9 @@ export async function GET(req: Request) {
 
 /**
  * POST { network, action, ... }
- *  create                              → new sub-account (agent key on master signs; no MetaMask)
+ *  create                              → new sub-account (agent key on master signs; no your wallet)
  *  move { from, to, amount }           → USDC between the wallet's own accounts (agent key on `from`)
- *  enableAgent { index }               → returns messageToSign for MetaMask (registers the same agent key on the sub)
+ *  enableAgent { index }               → returns messageToSign for your wallet (registers the same agent key on the sub)
  *  enableAgentFinalize { signature }   → submits it
  * create/move need an Idempotency-Key header.
  */

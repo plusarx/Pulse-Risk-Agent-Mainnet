@@ -91,7 +91,7 @@ export default function SpotPage({ params }: { params: Promise<{ symbol: string 
       bottom={
         <>
           <Tabs tabs={[{ id: 'holdings', label: 'bStock holdings' }, { id: 'balances', label: 'Balances' }, { id: 'history', label: 'Order history' }] as const} value={bottomTab} onChange={setBottomTab} />
-          {bottomTab === 'history' ? <OrderHistory venues={['bstocks']} /> : !bal.address ? <Empty>Connect MetaMask to see your balances</Empty> : bottomTab === 'balances' ? (
+          {bottomTab === 'history' ? <OrderHistory venues={['bstocks']} /> : !bal.address ? <Empty>Connect a wallet to see your balances</Empty> : bottomTab === 'balances' ? (
             <table className="mt-2 w-full"><thead><tr><th className="th">Asset</th><th className="th text-right">Balance</th><th className="th text-right">Value</th></tr></thead><tbody>
               <tr><td className="td">USDC (BSC)</td><td className="td text-right">{fmtUnits(bal.usdc, 18, 2)}</td><td className="td text-right">{bal.usdc !== null ? fmtUsd(toFloat(bal.usdc, 18)) : '—'}</td></tr>
               <tr><td className="td">USDT (BSC)</td><td className="td text-right">{fmtUnits(bal.usdt, 18, 2)}</td><td className="td text-right">{bal.usdt !== null ? fmtUsd(toFloat(bal.usdt, 18)) : '—'}</td></tr>

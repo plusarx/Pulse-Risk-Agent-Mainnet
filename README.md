@@ -41,7 +41,7 @@ one around price integrity, one around trading and the agent, and one around the
 |---|---|
 | **bStocks** (tokenized stocks) | BNB Chain |
 | **Perps** (Aster) | Aster chain |
-| **Options** (Derive) | Ethereum |
+| **Options** (Derive) | Funded through Ethereum |
 
 ---
 
@@ -69,7 +69,7 @@ The agent acts only through the app, only inside your limits, and only on prices
 ## Key facts
 
 - **Perps:** Aster (Aster chain), USDT margin, leverage per order, funded from your BNB wallet with no bridge.
-- **Options:** Derive (Ethereum), with orders signed by a limited session key.
+- **Options:** Derive (funded through Ethereum), with orders signed by a limited session key.
 - **Agent:** margin top-ups, releases and hedges. Modes: **Ask me first** (default) and **Autonomous**.
 - **Limits in code:** kill switch, per-trade and per-day caps, leverage cap, daily loss cap, off-BNB cap, autonomy expiry.
 - **Memory:** the chat agent keeps your preferences, decisions and reminders in Living Brain (about 2 cents per saved memory, with a hard budget cap), connects related memories and flags contradictions. Memory is advisory only.

@@ -29,7 +29,7 @@ export function actionDigest(f: ActionFields, n: VenueNetwork): Hex {
   return keccak256(concat(['0x1901', domainSeparator(n), actionHash(f)]));
 }
 
-/** EIP-712 typed data for MetaMask (viem/wagmi adds EIP712Domain itself). bigints as strings for JSON. */
+/** EIP-712 typed data for your wallet (viem/wagmi adds EIP712Domain itself). bigints as strings for JSON. */
 export function actionTypedData(f: ActionFields, n: VenueNetwork) {
   return {
     domain: { name: 'Matching', version: '1.0', chainId: DERIVE[n].chainId, verifyingContract: DERIVE_MATCHING },

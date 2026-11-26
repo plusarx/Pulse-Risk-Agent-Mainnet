@@ -20,7 +20,7 @@ import { decryptSecret, encryptSecret } from './crypto';
 import { promotePending, readPending, writePending } from './keystore';
 
 // Aster perps (BNB Chain) server client. Reads and orders are signed by the wallet's AGENT key (approved once by the
-// user in MetaMask, kept encrypted here); the agent can never withdraw. Every outbound call has a 10 s timeout, and a
+// user in your wallet, kept encrypted here); the agent can never withdraw. Every outbound call has a 10 s timeout, and a
 // 418/429 from Aster pauses all calls to that network until the venue's back-off has passed.
 
 const TIMEOUT_MS = 10_000;
@@ -97,7 +97,7 @@ function rememberSymbol(wallet: string, n: VenueNetwork, symbol: string) {
   getDb().prepare("UPDATE agent_keys SET meta = ? WHERE wallet = ? AND venue = 'aster' AND network = ?").run(JSON.stringify({ ...meta, symbols }), wallet.toLowerCase(), n);
 }
 
-// ── agent registration: prepare → the user signs in MetaMask → confirm ─────
+// ── agent registration: prepare → the user signs in your wallet → confirm ─────
 export async function prepareAsterKey(n: VenueNetwork, wallet: Address): Promise<{ typedData: TypedData; msg: string; agent: Address; expiresAt: number }> {
   const user = getAddress(wallet);
   const pk = generatePrivateKey();
@@ -118,9 +118,9 @@ export async function confirmAsterKey(n: VenueNetwork, wallet: Address, signatur
   if (!p?.meta) throw new Error('No pending perps registration — start again');
   const { msg } = JSON.parse(p.meta) as { msg: string };
   const td = agentApprovalTypedData(n, msg);
-  // Check the signature is the signed-in wallet's before sending it on (a wrong chain in MetaMask fails here).
+  // Check the signature is the signed-in wallet's before sending it on (a wrong chain in your wallet fails here).
   const ok = await verifyTypedData({ address: user, domain: td.domain, types: td.types, primaryType: td.primaryType, message: td.message, signature });
-  if (!ok) throw new Error('That signature is not from your wallet for this approval. Make sure MetaMask is on BNB Chain and try again.');
+  if (!ok) throw new Error('That signature is not from your wallet for this approval. Make sure your wallet is on BNB Chain and try again.');
   try {
     await asterFetch<{ code?: number }>(n, '/fapi/v3/registerAndApproveAgent', {
       method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: agentApprovalBody(msg, signature),
@@ -210,7 +210,7 @@ export async function asterRecentTrades(n: VenueNetwork, ticker: string) {
   return j.map((t) => ({ id: t.id, price: +t.price, size: +t.qty, time: t.time, side: (t.isBuyerMaker ? 'sell' : 'buy') as 'buy' | 'sell' })).reverse();
 }
 
-// ── orders (agent-signed; no MetaMask popup) ─────────────────────────────────
+// ── orders (agent-signed; no wallet popup) ─────────────────────────────────
 export interface AsterOrderReq { ticker: string; side: 'buy' | 'sell'; type: 'market' | 'limit'; size: string; price?: string; reduceOnly?: boolean }
 
 export async function placeAsterOrder(n: VenueNetwork, wallet: Address, o: AsterOrderReq): Promise<{ orderId: string; symbol: string; status: string }> {
@@ -326,7 +326,7 @@ export async function asterSpotToFutures(n: VenueNetwork, wallet: Address, amoun
   return { ok: true };
 }
 
-// ── withdraw: the USER signs the Action in MetaMask, the agent submits it ──
+// ── withdraw: the USER signs the Action in your wallet, the agent submits it ──
 // UNVERIFIED-live: ported from manager-service src/aster/v3/client.ts (withdraw / estimateWithdrawFee).
 const WITHDRAW_ASSET = 'USDT';
 const withdrawChain = (n: VenueNetwork) => {
@@ -369,7 +369,7 @@ export async function submitAsterWithdraw(n: VenueNetwork, wallet: Address, w: {
   const receiver = getAddress(wallet);
   const td = withdrawActionTypedData(chainId, receiver, WITHDRAW_ASSET, w.amount, w.fee, w.nonce, ASTER[n].asterChain);
   const ok = await verifyTypedData({ address: receiver, domain: td.domain, types: td.types, primaryType: td.primaryType, message: { ...td.message, nonce: BigInt(w.nonce) }, signature: w.signature });
-  if (!ok) throw new Error('The withdrawal signature is not from your wallet. Make sure MetaMask is on BNB Chain.');
+  if (!ok) throw new Error('The withdrawal signature is not from your wallet. Make sure your wallet is on BNB Chain.');
   // Field order is the signed order (the query string is signed raw and unsorted).
   const out = await signed<Record<string, unknown>>(n, wallet, 'POST', '/fapi/v3/aster/user-withdraw', {
     chainId: String(chainId), asset: WITHDRAW_ASSET, receiver, amount: w.amount, fee: w.fee, userNonce: w.nonce, userSignature: w.signature, recvWindow: 5000,

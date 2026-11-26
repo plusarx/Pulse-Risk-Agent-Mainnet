@@ -153,7 +153,7 @@ export function usdcToUsdtSwapSteps(recipient: Address, amountIn: bigint, minOut
   return steps;
 }
 
-// ── withdraw (signed by the USER in MetaMask; the agent only submits it) ─────
+// ── withdraw (signed by the USER in your wallet; the agent only submits it) ─────
 // UNVERIFIED-live: ported field for field from manager-service src/aster/v3/client.ts (withdrawActionTypedData,
 // destinationChainLabel, estimateWithdrawFee). Domain name is 'Aster' (not AsterSignTransaction), chainId is the
 // DESTINATION chain, and two field names carry a literal space.

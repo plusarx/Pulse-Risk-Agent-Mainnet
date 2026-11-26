@@ -35,7 +35,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ venue: string }
 
 /**
  * POST { network, action: 'order' | 'cancel', ... } with header Idempotency-Key.
- * Orders are signed server-side by the wallet's registered agent key — no MetaMask popup per order.
+ * Orders are signed server-side by the wallet's registered agent key — no wallet popup per order.
  */
 export async function POST(req: Request, ctx: { params: Promise<{ venue: string }> }) {
   const { venue } = await ctx.params;
