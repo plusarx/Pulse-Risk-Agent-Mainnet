@@ -1,0 +1,71 @@
+# Image-only deployment: no repo checkout needed on the server. Put this file in a folder with:
+#   .env       app secrets + DOMAIN            (template: repo .env.example)
+#   agent.env  agent settings                  (template: repo agent/.env.example; same AGENT_API_TOKEN)
+# then:  docker compose pull && docker compose up -d
+# Images come from GHCR (built by .github/workflows/docker.yml, which also deploys here into ~/pulsarx).
+# Pin a build with TAG=sha-xxxxxxx in .env.
+name: bnb-hackathon
+
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+services:
+  app:
+    image: ${REGISTRY:-ghcr.io/plusarx}/bnb-hackathon-app:${TAG:-latest}
+    env_file: .env
+    environment:
+      DB_PATH: /app/data/pulsarx.db
+      AGENT_CHAT_URL: http://agent-chat:3200
+    volumes:
+      - app-data:/app/data
+    restart: unless-stopped
+    logging: *logging
+
+  # Tick loop: watches accounts, posts proposals, executes approved actions (dry run unless agent.env says otherwise).
+  agent:
+    image: ${REGISTRY:-ghcr.io/plusarx}/bnb-hackathon-agent:${TAG:-latest}
+    env_file: agent.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_DB_PATH: /srv/agent/data/agent.db
+    volumes:
+      - agent-data:/srv/agent/data
+    depends_on:
+      app: { condition: service_healthy }
+    restart: unless-stopped
+    logging: *logging
+
+  # Chat API the app calls server-side. Always dry run; reachable only on the compose network.
+  agent-chat:
+    image: ${REGISTRY:-ghcr.io/plusarx}/bnb-hackathon-agent:${TAG:-latest}
+    command: ["node", "--import", "tsx", "src/server.ts"]
+    env_file: agent.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_CHAT_HOST: 0.0.0.0
+      AGENT_CHAT_PORT: "3200"
+    restart: unless-stopped
+    logging: *logging
+
+  # HTTPS with automatic Let's Encrypt for $DOMAIN. No config file needed.
+  caddy:
+    image: caddy:2.10-alpine
+    command: ["caddy", "reverse-proxy", "--from", "${DOMAIN:?set DOMAIN in .env (e.g. app.example.com or <ip>.sslip.io)}", "--to", "app:3100"]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  app-data:
+  agent-data:
+  caddy-data:
+  caddy-config:

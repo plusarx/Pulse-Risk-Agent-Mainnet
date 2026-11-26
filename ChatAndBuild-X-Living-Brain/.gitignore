@@ -1,0 +1,24 @@
+node_modules
+.next
+data/*.db*
+.env*
+!.env.example
+next-env.d.ts
+*.tsbuildinfo
+._*
+*.pem
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.example
+
+# Runtime state and local files: never commit (open-source repo)
+**/data/*.db*
+.DS_Store
+*.key
+
+# Foundry (contracts/): build output and the forge-std dependency (install with `forge install foundry-rs/forge-std`)
+contracts/out/
+contracts/cache/
+contracts/lib/

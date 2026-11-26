@@ -1,0 +1,12 @@
+**/node_modules
+**/.next
+**/data/*.db*
+**/.env
+**/.env.*
+!**/.env.example
+**/._*
+**/.DS_Store
+.git
+**/*.tsbuildinfo
+docker-compose*.yml
+deploy

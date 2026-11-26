@@ -1,0 +1,71 @@
+# A second, separate project on the same VM (see README.md). Own containers, own volumes, no published ports.
+# Caddy (in the other project) reaches the app over the shared "edge" network as lb-app:3100.
+#   docker network create edge        (once)
+#   docker compose pull && docker compose up -d
+#   docker compose --profile loop up -d     (optional agent loop; keep DRY_RUN=true in agent.env)
+name: living-brain
+
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+services:
+  app:
+    image: ${REGISTRY:-ghcr.io/plusarx}/living-brain-app:${TAG:-latest}
+    env_file: .env
+    environment:
+      DB_PATH: /app/data/pulsarx.db
+      AGENT_CHAT_URL: http://agent-chat:3200
+    volumes:
+      - app-data:/app/data
+    networks:
+      default: {}
+      edge: { aliases: [lb-app] }
+    restart: unless-stopped
+    mem_limit: 700m
+    logging: *logging
+
+  # Chat API the app calls server-side. Always dry run; reachable only on this project's network. Holds the Living Brain memory.
+  agent-chat:
+    image: ${REGISTRY:-ghcr.io/plusarx}/living-brain-agent:${TAG:-latest}
+    command: ["node", "--import", "tsx", "src/server.ts"]
+    env_file: agent.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_DB_PATH: /srv/agent/data/agent.db
+      MEMORY_DB_PATH: /srv/agent/data/memory.db
+      AGENT_CHAT_HOST: 0.0.0.0
+      AGENT_CHAT_PORT: "3200"
+    volumes:
+      - agent-data:/srv/agent/data
+    depends_on:
+      app: { condition: service_healthy }
+    restart: unless-stopped
+    mem_limit: 450m
+    logging: *logging
+
+  # Tick loop (optional). Off unless started with --profile loop. Keep DRY_RUN=true: the live site already runs the live loop for this wallet.
+  agent:
+    profiles: [loop]
+    image: ${REGISTRY:-ghcr.io/plusarx}/living-brain-agent:${TAG:-latest}
+    env_file: agent.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_DB_PATH: /srv/agent/data/agent.db
+      DRY_RUN: "true"
+      ALLOW_LIVE: "no"
+    volumes:
+      - agent-data:/srv/agent/data
+    depends_on:
+      app: { condition: service_healthy }
+    restart: unless-stopped
+    mem_limit: 450m
+    logging: *logging
+
+networks:
+  edge:
+    external: true
+
+volumes:
+  app-data:
+  agent-data:

@@ -1,0 +1,22 @@
+# One Caddy serves both sites. Certificates are issued automatically (Let's Encrypt). Replace the two hostnames if they change.
+
+# The existing site (project bnb-hackathon, service "app").
+54.251.42.51.sslip.io {
+	encode zstd gzip
+	reverse_proxy app:3100 {
+		transport http {
+			read_timeout 200s
+		}
+	}
+}
+
+# The living-brain site (project living-brain, reached over the shared "edge" network as lb-app).
+brain.54.251.42.51.sslip.io {
+	encode zstd gzip
+	reverse_proxy lb-app:3100 {
+		# The agent chat can take up to ~170 s per answer.
+		transport http {
+			read_timeout 200s
+		}
+	}
+}

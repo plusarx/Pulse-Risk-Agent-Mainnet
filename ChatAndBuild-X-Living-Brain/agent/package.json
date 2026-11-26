@@ -1,0 +1,39 @@
+{
+  "name": "pulse-risk-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env --import tsx src/index.ts",
+    "chat": "node --env-file=.env --import tsx src/server.ts",
+    "once": "node --env-file=.env --import tsx src/index.ts --once",
+    "demo": "node --env-file=.env --import tsx src/demo.ts",
+    "prompts": "node --import tsx src/printPrompts.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "demo:ui": "node --env-file=.env --import tsx src/demoUi.ts",
+    "demo:card": "node --env-file=.env --import tsx src/demoCard.ts",
+    "demo:modes": "node --env-file=.env --import tsx src/demoModes.ts",
+    "demo:portfolio": "node --env-file=.env --import tsx src/demoPortfolio.ts",
+    "sample": "node --env-file=.env --import tsx src/sampleLive.ts",
+    "doc-scenarios": "node --env-file=.env --import tsx src/docScenarios.ts",
+    "demo:graph": "node --env-file=.env --import tsx src/demoProposalGraph.ts",
+    "demo:propose": "node --env-file=.env --import tsx src/demoProposal.ts",
+    "propose": "node --env-file=.env --import tsx src/index.ts --propose-once",
+    "scenarios": "node --env-file=.env --import tsx src/runScenarios.ts"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.0",
+    "@langchain/langgraph": "^1.2.0",
+    "@langchain/openai": "^1.4.0",
+    "@living-brain/sdk": "^0.3.1",
+    "viem": "^2.37.9",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.6",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

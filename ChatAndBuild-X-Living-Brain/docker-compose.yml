@@ -1,0 +1,84 @@
+# Pulse Risk · BNB on one host (e.g. a Lightsail instance).
+#   cp .env.example .env              # app secrets + DOMAIN (also used for ${...} below)
+#   cp agent/.env.example agent/.env  # agent settings; AGENT_API_TOKEN must match the app's
+#   docker compose up -d --build
+# Only Caddy is published (80/443). It gets a Let's Encrypt certificate for $DOMAIN automatically.
+name: pulsarx
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_BSC_RPC_URL: ${NEXT_PUBLIC_BSC_RPC_URL:-}
+        NEXT_PUBLIC_ETH_RPC_URL: ${NEXT_PUBLIC_ETH_RPC_URL:-}
+        NEXT_PUBLIC_ARB_RPC_URL: ${NEXT_PUBLIC_ARB_RPC_URL:-}
+        NEXT_PUBLIC_SEPOLIA_RPC_URL: ${NEXT_PUBLIC_SEPOLIA_RPC_URL:-}
+    image: pulsarx-app
+    env_file: .env
+    environment:
+      DB_PATH: /app/data/pulsarx.db
+      AGENT_CHAT_URL: http://agent-chat:3200
+    volumes:
+      - app-data:/app/data
+    restart: unless-stopped
+    logging: &logging
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # Tick loop: watches accounts, posts proposals, executes approved actions (dry run unless agent/.env says otherwise).
+  agent:
+    build:
+      context: .
+      dockerfile: agent/Dockerfile
+    image: pulsarx-agent
+    env_file: agent/.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_DB_PATH: /srv/agent/data/agent.db
+    volumes:
+      - agent-data:/srv/agent/data
+    depends_on:
+      app: { condition: service_healthy }
+    restart: unless-stopped
+    logging: *logging
+
+  # Chat API the app calls server-side. Always dry run; reachable only on the compose network.
+  agent-chat:
+    build:
+      context: .
+      dockerfile: agent/Dockerfile
+    image: pulsarx-agent
+    command: ["node", "--import", "tsx", "src/server.ts"]
+    env_file: agent/.env
+    environment:
+      APP_API_URL: http://app:3100
+      AGENT_CHAT_HOST: 0.0.0.0
+      AGENT_CHAT_PORT: "3200"
+    depends_on:
+      agent: { condition: service_started }
+    restart: unless-stopped
+    logging: *logging
+
+  caddy:
+    image: caddy:2.10-alpine
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env (e.g. app.example.com or <ip>.sslip.io)}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  app-data:
+  agent-data:
+  caddy-data:
+  caddy-config:
