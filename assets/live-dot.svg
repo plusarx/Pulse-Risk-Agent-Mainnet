@@ -4,11 +4,11 @@
       <feGaussianBlur stdDeviation="1.6"/>
     </filter>
   </defs>
-  <circle cx="12" cy="12" r="6" fill="#22c55e" opacity="0.35">
+  <circle cx="12" cy="12" r="6" fill="#f0b90b" opacity="0.35">
     <animate attributeName="r" values="5;11;5" dur="2s" repeatCount="indefinite"/>
     <animate attributeName="opacity" values="0.55;0;0.55" dur="2s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="12" cy="12" r="5.5" fill="#22c55e" filter="url(#glow)" opacity="0.9"/>
-  <circle cx="12" cy="12" r="4.5" fill="#22c55e"/>
-  <circle cx="10.6" cy="10.6" r="1.4" fill="#bbf7d0" opacity="0.8"/>
+  <circle cx="12" cy="12" r="5.5" fill="#f0b90b" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="12" cy="12" r="4.5" fill="#f0b90b"/>
+  <circle cx="10.6" cy="10.6" r="1.4" fill="#fde68a" opacity="0.8"/>
 </svg>
