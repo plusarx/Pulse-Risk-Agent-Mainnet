@@ -1,3 +1,5 @@
+<p align="center"><img src="app/icon.svg" width="80" alt="Pulse Risk logo"></p>
+
 # Pulse Risk · Perps, Options and the Agent
 
 **Trade perpetuals and options from one screen, and let an agent watch your margin and hedge for you, inside limits you set.**

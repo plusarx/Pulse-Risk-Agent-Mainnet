@@ -1,3 +1,5 @@
+<p align="center"><img src="app/icon.svg" width="80" alt="Pulse Risk logo"></p>
+
 # Pulse Risk · Price Integrity
 
 **Can you trust the price your collateral is valued at? Pulse Risk checks, before it acts.**

@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/icon.svg" width="80" alt="Pulse Risk logo"></p>
+
 # Pulse Risk
 
 **A risk desk for tokenized stocks on BNB Chain, perpetuals on Aster and options on Derive, with an agent that watches
