@@ -2,6 +2,8 @@
 
 # Pulse Risk · Perps, Options and the Agent
 
+**[▶ Watch the demo video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/utkarsharya_pulsarx_io/IQC0ij5e0o1ASaj-PytzCPmUAfAjRLNK_p55jf2jIkMu1O0?e=YSks74)**
+
 **Trade perpetuals and options from one screen, and let an agent watch your margin and hedge for you, inside limits you set.**
 
 Perps run on **Aster** (Aster chain, USDT margin). Options run on **Derive** (funded through Ethereum). An agent checks your accounts every 30

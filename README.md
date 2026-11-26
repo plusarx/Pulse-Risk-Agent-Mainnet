@@ -17,6 +17,7 @@ nothing until you press Approve.
 |---|---|
 | **See the idea** | [Pitch deck](pitch-deck/pitch-deck.pdf) |
 | **Watch the demo (CoinMarketCap × Atlas Challenge)** | [Demo video](https://drive.google.com/file/d/17EDyvDn2Gmr7KKx7LkhZsuqBNJTx7zs5/view?usp=sharing) |
+| **Watch the demo (developer track)** | [Demo video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/utkarsharya_pulsarx_io/IQC0ij5e0o1ASaj-PytzCPmUAfAjRLNK_p55jf2jIkMu1O0?e=YSks74) |
 | **Why the prices can be trusted** | [CoinMarketCap × Atlas Challenge](CoinMarketCap%20%C3%97%20Atlas%20Challenge/) |
 | **How trading and the agent work** | [bnb-hackathon(developer track)](bnb-hackathon%28developer%20track%29/) |
 | **How the agent remembers you (long-term memory)** | [ChatAndBuild-X-Living-Brain](ChatAndBuild-X-Living-Brain/) |
