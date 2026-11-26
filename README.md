@@ -15,7 +15,7 @@ nothing until you press Approve.
 |---|---|
 | **See the idea** | [Pitch deck](pitch-deck/pitch-deck.pdf) |
 | **Why the prices can be trusted** | [CoinMarketCap × Atlas Challenge](CoinMarketCap%20%C3%97%20Atlas%20Challenge/) |
-| **How trading and the agent work** | [bnb-hackathon](bnb-hackathon/) |
+| **How trading and the agent work** | [developer track](developer%20track/) |
 | **How the agent remembers you (long-term memory)** | [ChatAndBuild-X-Living-Brain](ChatAndBuild-X-Living-Brain/) |
 | **Try the Living Brain edition live** | [https://brain.54.251.42.51.sslip.io](https://brain.54.251.42.51.sslip.io) |
 | **About Living Brain** | [livingbrain.com](https://livingbrain.com) · [Docs](https://docs.livingbrain.com/docs/quickstart) · [Source repo](https://github.com/plusarx/living-brain) |
@@ -27,7 +27,7 @@ nothing until you press Approve.
 | Folder | What it covers | Read this for |
 |---|---|---|
 | **[CoinMarketCap × Atlas Challenge](CoinMarketCap%20%C3%97%20Atlas%20Challenge/)** | The **price-integrity and risk-pricing layer**: four independent price sources (Atlas oracle, CoinMarketCap DEX data, the stock's perp, the app's own price), a verdict per token, a risk-priced collateral haircut, and the rules that stop the agent from acting on a bad price | The use case, the thresholds, the haircut math and where it is enforced. [README](CoinMarketCap%20%C3%97%20Atlas%20Challenge/README.md) · [Demo script](CoinMarketCap%20%C3%97%20Atlas%20Challenge/docs/DEMO.md) |
-| **[bnb-hackathon](bnb-hackathon/)** | **Perps on Aster, options on Derive and the agent**: the trading tickets, leverage, funding from your BNB wallet, margin rules, hedges, the two modes, the limits and the chat | How each venue works and how the agent decides and acts. [README](bnb-hackathon/README.md) · [Agent guide](bnb-hackathon/docs/AGENT.md) · [Build guide](bnb-hackathon/docs/AGENT_BUILD.md) · [Aster notes](bnb-hackathon/docs/endpoints/aster.md) |
+| **[developer track](developer%20track/)** | **Perps on Aster, options on Derive and the agent**: the trading tickets, leverage, funding from your BNB wallet, margin rules, hedges, the two modes, the limits and the chat | How each venue works and how the agent decides and acts. [README](developer%20track/README.md) · [Agent guide](developer%20track/docs/AGENT.md) · [Build guide](developer%20track/docs/AGENT_BUILD.md) · [Aster notes](developer%20track/docs/endpoints/aster.md) |
 | **[ChatAndBuild-X-Living-Brain](ChatAndBuild-X-Living-Brain/)** | **Long-term memory with Living Brain**: the chat agent remembers your hedging preferences, your decisions and why, and your reminders across sessions, connects related memories, and keeps both sides when you change your mind. Memory only shapes wording and preferences: numbers come from live data and money moves only on Approve | How the agent gets to know you: the remember, retrieve and connect flow, the memory layers, the Memory tab, and the cost controls |
 
 Each folder is a complete, runnable copy of the application. The three READMEs tell the same project from three angles:
@@ -82,7 +82,7 @@ The agent acts only through the app, only inside your limits, and only on prices
 Requires Node 22.5 or newer and any EVM wallet. Pick any folder, then:
 
 ```bash
-cd bnb-hackathon                    # or "CoinMarketCap × Atlas Challenge", or ChatAndBuild-X-Living-Brain
+cd "developer track"                    # or "CoinMarketCap × Atlas Challenge", or ChatAndBuild-X-Living-Brain
 npm install
 cp .env.example .env.local          # fill the secrets
 cd agent && npm install && cp .env.example .env && cd ..
