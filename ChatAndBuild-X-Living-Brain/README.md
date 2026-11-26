@@ -1,5 +1,7 @@
 # Pulse Risk · BNB, with Living Brain memory
 
+**[▶ Watch the demo video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/tusharvinayak_pulsarx_io/IQDk7iuj_dnHSbZnmCkNE5UaAatlPYvOEZXQZzobaaJ2INM?e=kN21Rf)**
+
 An AI risk agent for people who hold **tokenised stocks (bStocks) on BNB Chain**. It hedges them with **perps (Aster)** and **options (Derive)**, tops up margin from the BNB wallet, and asks for approval before anything moves money. A chat agent ("Pulse") sits on top.
 
 This repo is the **Living Brain edition**: the chat agent has a long-term memory kept in [Living Brain](https://livingbrain.com), so it remembers how *you* like to hedge, why you said no last time, and what you asked it to remind you of, across sessions.
