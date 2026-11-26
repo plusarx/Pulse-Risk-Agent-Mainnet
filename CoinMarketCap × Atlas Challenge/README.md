@@ -2,6 +2,8 @@
 
 # Pulse Risk · Price Integrity
 
+**[▶ Watch the demo video](https://drive.google.com/file/d/17EDyvDn2Gmr7KKx7LkhZsuqBNJTx7zs5/view?usp=sharing)**
+
 **Can you trust the price your collateral is valued at? Pulse Risk checks, before it acts.**
 
 Pulse Risk is a risk desk for tokenized stocks (bStocks) on BNB Chain. This README is about one feature: a
