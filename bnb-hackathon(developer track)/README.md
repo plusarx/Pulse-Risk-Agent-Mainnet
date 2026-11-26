@@ -4,7 +4,7 @@
 
 **[▶ Watch the demo video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/utkarsharya_pulsarx_io/IQC0ij5e0o1ASaj-PytzCPmUAfAjRLNK_p55jf2jIkMu1O0?e=YSks74)**
 
-<img src="docs/live-dot.svg" width="16" height="16" align="absmiddle" alt="live"> **Currently live on mainnet.**
+**Currently live on mainnet.** <img src="docs/live-dot.svg" width="16" height="16" align="absmiddle" alt="live">
 
 **Trade perpetuals and options from one screen, and let an agent watch your margin and hedge for you, inside limits you set.**
 

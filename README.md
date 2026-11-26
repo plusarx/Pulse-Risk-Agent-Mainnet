@@ -9,7 +9,7 @@ Pulse Risk shows one portfolio across your BNB wallet, your perps account and yo
 margin healthy and places hedges inside limits you set. It can never withdraw your money, and in its default mode it does
 nothing until you press Approve.
 
-<img src="assets/live-dot.svg" width="16" height="16" align="absmiddle" alt="live"> **Currently live on mainnet.**
+**Currently live on mainnet.** <img src="assets/live-dot.svg" width="16" height="16" align="absmiddle" alt="live">
 
 ---
 
