@@ -1,4 +1,4 @@
-<p align="center"><img src="app/icon.svg" width="80" alt="Pulse Risk logo"></p>
+<p align="center"><img src="docs/icon-beating.svg" width="96" alt="Pulse Risk logo"></p>
 
 # Pulse Risk · Perps, Options and the Agent
 
