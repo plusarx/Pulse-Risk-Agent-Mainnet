@@ -17,6 +17,7 @@ nothing until you press Approve.
 
 | | |
 |---|---|
+| **Watch the pitch (main video)** | [Pitch deck video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/utkarsharya_pulsarx_io/IQCQI_gfMYE4RpzSWKEPK4JGAW2lJnpuaQLQSdQc3QARbzY?e=DdA35z) |
 | **See the idea** | [Pitch deck](pitch-deck/pitch-deck.pdf) |
 | **Watch the demo (CoinMarketCap × Atlas Challenge)** | [Demo video](https://drive.google.com/file/d/17EDyvDn2Gmr7KKx7LkhZsuqBNJTx7zs5/view?usp=sharing) |
 | **Watch the demo (developer track)** | [Demo video](https://pulsarx1-my.sharepoint.com/:v:/g/personal/utkarsharya_pulsarx_io/IQC0ij5e0o1ASaj-PytzCPmUAfAjRLNK_p55jf2jIkMu1O0?e=YSks74) |
