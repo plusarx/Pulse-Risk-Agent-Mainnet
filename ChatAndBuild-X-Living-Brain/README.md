@@ -15,7 +15,7 @@ This repo is the **Living Brain edition**: the chat agent has a long-term memory
 | **Source of this folder** | [plusarx/living-brain](https://github.com/plusarx/living-brain) |
 | **Hackathon track** | [BNB Bangkok on HackQuest](https://www.hackquest.io/hackathons/BNB-Bangkok) · ChatAndBuild: Build Memory-Powered Agents with Living Brain |
 | **Pitch deck** | [pitch-deck.pdf](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet/blob/main/pitch-deck.pdf) |
-| **Master repo** | [plusarx/Pulse-Risk-Agent-Mainnet](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet) (this project next to [bnb-hackathon](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet/tree/main/bnb-hackathon) and [CMC-X-Atlas](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet/tree/main/CMC-X-Atlas)) |
+| **Master repo** | [plusarx/Pulse-Risk-Agent-Mainnet](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet) (this project next to [bnb-hackathon](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet/tree/main/bnb-hackathon) and [CoinMarketCap × Atlas Challenge](https://github.com/plusarx/Pulse-Risk-Agent-Mainnet/tree/main/CoinMarketCap%20%C3%97%20Atlas%20Challenge)) |
 
 ## Architecture
 
