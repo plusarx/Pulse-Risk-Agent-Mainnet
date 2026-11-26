@@ -13,7 +13,7 @@ nothing until you press Approve.
 
 | | |
 |---|---|
-| **See the idea** | [Pitch deck](pitch-deck.pdf) |
+| **See the idea** | [Pitch deck](pitch-deck/pitch-deck.pdf) |
 | **Why the prices can be trusted** | [CMC-X-Atlas](CMC-X-Atlas/) |
 | **How trading and the agent work** | [bnb-hackathon](bnb-hackathon/) |
 | **How the agent remembers you (long-term memory)** | [ChatAndBuild-X-Living-Brain](ChatAndBuild-X-Living-Brain/) |
