@@ -4,7 +4,7 @@
 
 **[▶ Watch the demo video](https://drive.google.com/file/d/17EDyvDn2Gmr7KKx7LkhZsuqBNJTx7zs5/view?usp=sharing)**
 
-**Currently live on mainnet.**
+<img src="docs/live-dot.svg" width="16" height="16" align="absmiddle" alt="live"> **Currently live on mainnet.**
 
 **Can you trust the price your collateral is valued at? Pulse Risk checks, before it acts.**
 
